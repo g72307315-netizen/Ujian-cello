@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ujian Semester IPA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #c3dafe, #667eea);
+      margin: 0;
+      padding: 20px;
+      color: #1a202c;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      max-width: 700px;
+      width: 100%;
+      border-radius: 10px;
+      padding: 20px 30px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+    }
+    h1 {
+      text-align: center;
+      color: #2b6cb0;
+      margin-bottom: 20px;
+    }
+    .question-number {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #2c5282;
+    }
+    .question-text {
+      margin-bottom: 15px;
+      white-space: pre-line;
+    }
+    .image-container {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .image-container img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid #cbd5e0;
+    }
+    .options {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+    .options li {
+      margin-bottom: 10px;
+    }
+    .options label {
+      cursor: pointer;
+      display: block;
+      padding: 10px 15px;
+      border: 2px solid #cbd5e0;
+      border-radius: 8px;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+    .options input[type="radio"] {
+      display: none;
+    }
+    .options input[type="radio"]:checked + label {
+      background-color: #bee3f8;
+      border-color: #3182ce;
+      font-weight: bold;
+    }
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+    button {
+      background-color: #3182ce;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:disabled {
+      background-color: #a0aec0;
+      cursor: not-allowed;
+    }
+    button:hover:not(:disabled) {
+      background-color: #2c5282;
+    }
+    .result {
+      text-align: center;
+    }
+    .result h2 {
+      color: #2c7a7b;
+    }
+    .review {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .review-item {
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #cbd5e0;
+      border-radius: 8px;
+      background-color: #f7fafc;
+    }
+    .correct {
+      color: green;
+      font-weight: bold;
+    }
+    .wrong {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Ujian Semester - Ilmu Pengetahuan Alam</h1>
+    <div id="quiz-container">
+      <!-- Soal dan pilihan akan muncul di sini -->
+    </div>
+    <div class="buttons">
+      <button id="prev-btn" disabled>Sebelumnya</button>
+      <button id="next-btn">Selanjutnya</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        id: 31,
+        question: "Perhatikan gambar berikut.\nNama dari simbol bahan kimia berbahaya adalah….",
+        options: {
+          A: "Bahan mudah meledak jika terkena cahaya",
+          B: "Bahan merupakan oksidator yang dapat mempercepat pembakaran zat lain",
+          C: "Bahan hanya mudah larut dalam air",
+          D: "Bahan aman dicampur dengan zat mudah terbakar"
+        },
+        correctAnswer: "B",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/GHS-pictogram-oxidizer.svg/120px-GHS-pictogram-oxidizer.svg.png"
+      },
+      {
+        id: 32,
+        question: "Sebuah bahan kimia diberi label dengan simbol tengkorak dan tulang bersilang. Analisis yang tepat terkait penyimpanan bahan tersebut adalah …",
+        options: {
+          A: "Dapat disimpan di tempat terbuka karena mudah menguap",
+          B: "Harus disimpan di ruangan terang agar terlihat jelas",
+          C: "Harus disimpan dengan wadah tertutup rapat dan diberi tanda peringatan bahaya",
+          D: "Tidak perlu diberi label tambahan"
+        },
+        correctAnswer: "C",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/GHS-pictogram-skull.svg/120px-GHS-pictogram-skull.svg.png"
+      },
+      {
+        id: 33,
+        question: "Perhatikan tabel berikut\nBesaran \nSatuan \n1 Panjang \nMeter \n2 Luas \nM3\n3 Waktu \nSekon \n4 Volume \nM2\nBerdasarkan tabel diatas, Manakah besaran turunan dan satuannya yang sesuai adalah….",
+        options: {
+          A: "Luas - m²",
+          B: "Luas - m³",
+          C: "Volume - m²",
+          D: "Volume - m³"
+        },
+        correctAnswer: "A"
+      },
+      {
+        id: 34,
+        question: "Jika kamu diminta menyusun rancangan eksperimen untuk mengetahui ‘pengaruh pupuk organik terhadap pertumbuhan tanaman cabai’, maka variabel bebas, terikat, dan kontrol yang paling tepat adalah …",
+        options: {
+          A: "Bebas: pertumbuhan tanaman, Terikat: jenis pupuk, Kontrol: cahaya",
+          B: "Bebas: jenis pupuk, Terikat: pertumbuhan tanaman, Kontrol: cahaya dan air",
+          C: "Bebas: jumlah cahaya, Terikat: jenis pupuk, Kontrol: air",
+          D: "Bebas: jumlah air, Terikat: pupuk organik, Kontrol: cahaya"
+        },
+        correctAnswer: "B"
+      },
+      {
+        id: 35,
+        question: "Seorang peneliti ingin merancang pemetaan DNA untuk menganalisis penyakit turunan pada manusia. Cabang biologi yang paling relevan adalah …",
+        options: {
+          A: "Anatomi",
+          B: "Genetika",
+          C: "Histologi",
+          D: "Fisiologi"
+        },
+        correctAnswer: "B"
+      },
+      {
+        id: 36,
+        question: "Perhatikan gambar di bawah ini!",
+        options: {
+          A: "Sel hewan",
+          B: "Sel tumbuhan",
+          C: "Sel bakteri",
+          D: "Sel jamur"
+        },
+        correctAnswer: "B",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Plant_cell_structure.svg/300px-Plant_cell_structure.svg.png"
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    const userAnswers = {};
+
+    const quizContainer = document.getElementById('quiz-container');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    function renderQuestion() {
+      const q = questions[currentQuestionIndex];
+      let html = `<div class="question-number">Soal ${currentQuestionIndex + 1} dari ${questions.length} (No. ${q.id})</div>`;
+      html += `<div class="question-text">${q.question.replace(/\n/g, '<br>')}</div>`;
+
+      if (q.image) {
+        html += `<div class="image-container"><img src="${q.image}" alt="Gambar soal ${q.id}"></div>`;
+      }
+
+      html += '<ul class="options">';
+      for (const [key, value] of Object.entries(q.options)) {
+        const checked = userAnswers[currentQuestionIndex] === key ? 'checked' : '';
+        html += `
+          <li>
+            <input type="radio" id="option-${key}" name="answer" value="${key}" ${checked} />
+            <label for="option-${key}">${key}. ${value}</label>
+          </li>
+        `;
+      }
+      html += '</ul>';
+
+      quizContainer.innerHTML = html;
+
+      // Disable prev button on first question
+      prevBtn.disabled = currentQuestionIndex === 0;
+
+      // Change next button text on last question
+      nextBtn.textContent = currentQuestionIndex === questions.length - 1 ? 'Selesai' : 'Selanjutnya';
+
+      // Add event listener for options
+      const options = document.getElementsByName('answer');
+      options.forEach(option => {
+        option.addEventListener('change', (e) => {
+          userAnswers[currentQuestionIndex] = e.target.value;
+        });
+      });
+    }
+
+    function showResults() {
+      let score = 0;
+      let resultHTML = `<div class="result"><h2>Hasil Ujian Semester</h2>`;
+      for (let i = 0; i < questions.length; i++) {
+        if (userAnswers[i] === questions[i].correctAnswer) {
+          score++;
+        }
+      }
+      resultHTML += `<p>Skor Anda: <strong>${score} / ${questions.length}</strong></p>`;
+      resultHTML += `<div class="review"><h3>Review Jawaban:</h3>`;
+
+      questions.forEach((q, i) => {
+        const userAnswer = userAnswers[i] || 'Tidak dijawab';
+        const isCorrect = userAnswer === q.correctAnswer;
+        resultHTML += `
+          <div class="review-item">
+            <strong>Soal ${i + 1} (No. ${q.id}):</strong> ${q.question.split('\n')[0]}<br>
+            Jawaban Anda: <span class="${isCorrect ? 'correct' : 'wrong'}">${userAnswer}</span><br>
+            Jawaban Benar: <strong>${q.correctAnswer}</strong>
+          </div>
+        `;
+      });
+
+      resultHTML += `</div>`;
+      resultHTML += `<button id="restart-btn">Kerjakan Ulang</button></div>`;
+
+      quizContainer.innerHTML = resultHTML;
+      prevBtn.style.display = 'none';
+      nextBtn.style.display = 'none';
+
+      document.getElementById('restart-btn').addEventListener('click', () => {
+        currentQuestionIndex = 0;
+        for (const key in userAnswers) delete userAnswers[key];
+        prevBtn.style.display = 'inline-block';
+        nextBtn.style.display = 'inline-block';
+        renderQuestion();
+      });
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        renderQuestion();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      // Check if user has selected an answer before moving on
+      if (!userAnswers[currentQuestionIndex]) {
+        alert('Silakan pilih jawaban terlebih dahulu!');
+        return;
+      }
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    });
+
+    // Initial render
+    renderQuestion();
+  </script>
+</body>
+</html>
